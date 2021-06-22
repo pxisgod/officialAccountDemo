@@ -81,12 +81,12 @@ public class MvcConfig {
              * @param registry
              */
             public void addCorsMappings(CorsRegistry registry) {
-                 registry.addMapping("/**")
+                 /*registry.addMapping("/**")
                          .allowedOrigins("*")
                          .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
                          .allowCredentials(true)
                          .allowedHeaders("*")
-                         .maxAge(3600);
+                         .maxAge(3600);*/
             }
 
 

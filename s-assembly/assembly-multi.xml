@@ -1,0 +1,69 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+    <id>release</id>
+    <formats>
+        <format>tar.gz</format><!--打包的结果格式-->
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <useProjectArtifact>true</useProjectArtifact>
+            <outputDirectory>remote/lib</outputDirectory>
+            <scope>runtime</scope>
+            <unpack>false</unpack>
+        </dependencySet>
+        <dependencySet>
+            <useProjectArtifact>true</useProjectArtifact>
+            <outputDirectory>remote/lib</outputDirectory>
+            <scope>system</scope>
+            <unpack>false</unpack>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+        <fileSet>
+            <directory>${project.basedir}/bin</directory>
+            <outputDirectory>remote/bin</outputDirectory>
+            <lineEnding>unix</lineEnding>
+            <fileMode>744</fileMode>
+            <includes>
+                <include>*.sh</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources</directory>
+            <outputDirectory>remote/config</outputDirectory>
+            <fileMode>644</fileMode>
+            <includes>
+                <include>*.yml</include>
+                <include>*.xml</include>
+                <include>*.txt</include>
+                <include>*.properties</include>
+                <include>*.yaml</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources/${project.active}</directory>
+            <includes>
+                <include>*.yaml</include>
+                <include>*.properties</include>
+            </includes>
+            <outputDirectory>remote/config</outputDirectory>
+        </fileSet>
+
+
+        <!--
+        <fileSet>
+            <directory>${project.basedir}/lib</directory>
+            <outputDirectory>remote/lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        -->
+
+    </fileSets>
+
+</assembly>

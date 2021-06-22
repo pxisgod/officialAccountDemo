@@ -13,6 +13,10 @@
         <version>2.1.5.RELEASE</version>
         <relativePath/>
     </parent>
+
+    <properties>
+        <project-id>officialAccountDemo</project-id>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -29,6 +33,18 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.20</version>
+        </dependency>
+
+        <!--aspectj包-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.4</version>
         </dependency>
 
         <!--logback日志包-->
@@ -91,8 +107,50 @@
         </dependency>
 
     </dependencies>
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <project.active>local</project.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <project.active>dev</project.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <project.active>prod</project.active>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+        <finalName>${project-id}</finalName>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources/${project.active}</directory>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <excludes>
+                    <exclude>local/*</exclude>
+                    <exclude>dev/*</exclude>
+                    <exclude>prod/*</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -101,8 +159,121 @@
                     <target>6</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>static/</exclude>
+                        <exclude>*.yml</exclude>
+                        <exclude>*.xml</exclude>
+                        <exclude>*.properties</exclude>
+                        <exclude>*.yaml</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <!--<finalName>${project-id}</finalName>-->
+                    <appendAssemblyId>true</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>s-assembly/assembly-multi.xml</descriptor><!--对应着打包配置-->
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.2.2</version>
+                <configuration>
+                    <imageName>officialAccountDemo</imageName>
+                    <!--<dockerHost>unix:///var/run/docker.sock</dockerHost>-->
+                    <!--<registryUrl>localhost:5000/</registryUrl>-->
+                    <imageTags>
+                        <imageTag>latest</imageTag>
+                        <imageTag>${project.version}</imageTag>
+                    </imageTags>
+                    <buildArgs>
+                        <APP_PATH_ARG>/app/app</APP_PATH_ARG>
+                        <LOG_PATH_ARG>/app/log</LOG_PATH_ARG>
+                    </buildArgs>
+                    <!--会在target目录中生成一个docker文件夹-->
+                    <dockerDirectory>${basedir}/docker</dockerDirectory> <!-- 指定 Dockerfile 路径-->
+                    <!-- 这里是复制 jar 包到 docker 容器指定目录配置，也可以写到 Docokerfile 中 -->
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath> <!--相对docker目录的位置-->
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}-release.tar.gz</include>
+                        </resource>
+                    </resources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>build-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>tag-image-1</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <image>officialAccountDemo:${project.version}</image>
+                            <newName>localhost:5000/officialAccountDemo:${project.version}</newName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>tag-image-2</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <image>officialAccountDemo:latest</image>
+                            <newName>localhost:5000/officialAccountDemo:latest</newName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>push-image-1</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <imageName>localhost:5000/officialAccountDemo:${project.version}</imageName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>push-image-2</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <imageName>localhost:5000/officialAccountDemo:latest</imageName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
     <!--仓库配置-->
     <repositories>
         <repository>
