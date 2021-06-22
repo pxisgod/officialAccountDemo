@@ -31,7 +31,7 @@ export log_name=$HOSTNAME
 export CLASSPATH="$V_HOME/config:${jarFile}"
 
 $JAVA_BIN_HOME/java $JAVA_OPTS \
-        -Dservice.id=${serviceId}
+        -Dservice.id=${serviceId} \
         -Dspring.profiles.active=$1 \
         -Dserver.port=8080 \
         -Dfile.encoding=utf-8 \
