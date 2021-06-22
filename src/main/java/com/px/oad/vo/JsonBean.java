@@ -15,7 +15,7 @@ public class JsonBean implements Serializable {
     }
 
 
-    private Integer errorcode  = CODE_SUCCESS;
+    private Integer errcode  = CODE_SUCCESS;
 
 
     private String errmsg =MSG_SUCCESS;
@@ -27,17 +27,17 @@ public class JsonBean implements Serializable {
     }
 
     public JsonBean(Integer code, String message) {
-        this.errorcode = code;
+        this.errcode = code;
         this.errmsg = message;
     }
 
 
-    public Integer getErrorcode() {
-        return errorcode;
+    public Integer getErrcode() {
+        return errcode;
     }
 
-    public void setErrorcode(Integer code) {
-        this.errorcode = code;
+    public void setErrcode(Integer code) {
+        this.errcode = code;
     }
 
     public String getErrmsg() {
@@ -65,7 +65,7 @@ public class JsonBean implements Serializable {
      * @param reason
      */
     public void fail(String reason){
-        this.setErrorcode(500);
+        this.setErrcode(500);
         this.setErrmsg(reason);
         this.data = null;
     }
@@ -75,14 +75,14 @@ public class JsonBean implements Serializable {
      * @param reason
      */
     public void success(String reason){
-        this.setErrorcode(0);
+        this.setErrcode(0);
         this.setErrmsg(reason);
     }
 
 
     @Override
     public String toString() {
-        return "JsonBean [errorcode=" + errorcode + ", errmsg=" + errmsg + ", data=" + data + "]";
+        return "JsonBean [errcode=" + errcode + ", errmsg=" + errmsg + ", data=" + data + "]";
     }
 
 
