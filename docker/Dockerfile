@@ -18,7 +18,7 @@ RUN cd $APP_PATH_ARG \
 VOLUME $LOG_PATH_ARG
 EXPOSE 8080
 WORKDIR $APP_PATH_ARG/remote/bin
-ENTRYPOINT ["start.sh"]
+ENTRYPOINT ["./start.sh"]
 CMD ["local"]
 
 
