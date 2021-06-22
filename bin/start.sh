@@ -4,7 +4,7 @@
 ################
 time=`date '+%Y%m%d'`
 user=`whoami`
-serviceId="officialAccountDemo"
+serviceId="official-account-demo"
 
 isRun()
 {

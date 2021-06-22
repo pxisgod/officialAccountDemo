@@ -10,10 +10,10 @@ ENV LOG_PATH=$LOG_PATH_ARG
 ENV JAVA_BIN_HOME "/usr/lib/jvm/java-8-openjdk-amd64/bin"
 RUN mkdir -p $APP_PATH_ARG
 RUN mkdir -p $LOG_PATH_ARG
-COPY --chown=root:root officialAccountDemo-release.tar.gz $APP_PATH_ARG
+COPY --chown=root:root official-account-demo-release.tar.gz $APP_PATH_ARG
 RUN cd $APP_PATH_ARG \
-    && tar -zxvf officialAccountDemo-release.tar.gz -C . \
-    && rm -rf officialAccountDemo-release.tar.gz \
+    && tar -zxvf official-account-demo-release.tar.gz -C . \
+    && rm -rf official-account-demo-release.tar.gz \
     && chmod u+x remote/bin/*.sh
 VOLUME $LOG_PATH_ARG
 EXPOSE 8080

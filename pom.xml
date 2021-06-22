@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>officialAccountDemo</artifactId>
+    <groupId>com.px</groupId>
+    <artifactId>official-account-demo</artifactId>
     <version>1.0-SNAPSHOT</version>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -15,7 +15,7 @@
     </parent>
 
     <properties>
-        <project-id>officialAccountDemo</project-id>
+        <project-id>official-account-demo</project-id>
     </properties>
     <dependencies>
         <dependency>
@@ -155,8 +155,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>6</source>
-                    <target>6</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
 
@@ -197,7 +197,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.2.2</version>
                 <configuration>
-                    <imageName>officialAccountDemo</imageName>
+                    <imageName>official-account-demo</imageName>
                     <!--<dockerHost>unix:///var/run/docker.sock</dockerHost>-->
                     <!--<registryUrl>localhost:5000/</registryUrl>-->
                     <imageTags>
@@ -234,8 +234,8 @@
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <image>officialAccountDemo:${project.version}</image>
-                            <newName>localhost:5000/officialAccountDemo:${project.version}</newName>
+                            <image>official-account-demo:${project.version}</image>
+                            <newName>localhost:5000/official-account-demo:${project.version}</newName>
                         </configuration>
                     </execution>
                     <execution>
@@ -245,8 +245,8 @@
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <image>officialAccountDemo:latest</image>
-                            <newName>localhost:5000/officialAccountDemo:latest</newName>
+                            <image>official-account-demo:latest</image>
+                            <newName>localhost:5000/official-account-demo:latest</newName>
                         </configuration>
                     </execution>
                     <execution>
@@ -256,7 +256,7 @@
                             <goal>push</goal>
                         </goals>
                         <configuration>
-                            <imageName>localhost:5000/officialAccountDemo:${project.version}</imageName>
+                            <imageName>localhost:5000/official-account-demo:${project.version}</imageName>
                         </configuration>
                     </execution>
                     <execution>
@@ -266,7 +266,7 @@
                             <goal>push</goal>
                         </goals>
                         <configuration>
-                            <imageName>localhost:5000/officialAccountDemo:latest</imageName>
+                            <imageName>localhost:5000/official-account-demo:latest</imageName>
                         </configuration>
                     </execution>
                 </executions>
