@@ -23,10 +23,10 @@ public class CheckController {
 
 
     @RequestMapping(value = "/checkSignature", method = RequestMethod.GET)
-    @ResponseBody
-    public JsonBean getBlogContent(/*@RequestParam(name = "signature") String  signature,
+    public String getBlogContent(/*@RequestParam(name = "signature") String  signature,
                                    @RequestParam(name = "timestamp") String  timestamp,
-                                   @RequestParam(name = "timestamp") String  nonce*/) {
+                                   @RequestParam(name = "timestamp") String  nonce,
+                                 @RequestParam(name = "echostr") String  echostr*/) {
         String token="pxisgod";
         String AESKey="MBLt6RA1tLtzvhNJwqkqwJKwMS7tq9Q4MCYqNbvP5GQ";
         JsonBean jsonBean = new JsonBean();
@@ -41,7 +41,8 @@ public class CheckController {
             log.error("获取博客内容失败", e);
             jsonBean.fail("获取博客内容失败");
         }
-        return jsonBean;
+        String echostr=request.getParameter("echostr");
+        return echostr;
     }
 
     @RequestMapping(value = "/demo", method = RequestMethod.GET)
