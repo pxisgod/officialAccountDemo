@@ -1,12 +1,16 @@
 package com.px.oad.controller;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.px.oad.configuration.ClientZkConfig;
 import com.px.oad.service.ProcessRequest;
 import com.px.oad.service.PushMsgService;
 import com.px.oad.util.SignUtil;
 import com.px.oad.vo.JsonBean;
 import com.px.oad.vo.VpnInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.curator.framework.CuratorFramework;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -14,6 +18,9 @@ import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.annotation.Resources;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
@@ -33,12 +40,17 @@ public class OfficialAccountController {
     @Autowired
     private PushMsgService pushMsgService;
 
+    //消息处理服务
     @Autowired
     private ProcessRequest processRequest;
+
+    @Resource(name="clientZk")
+    private CuratorFramework clientZk;
 
     //token值
     @Value("${token}")
     private String token;
+
 
 
     /**
@@ -93,10 +105,16 @@ public class OfficialAccountController {
 
         JsonBean jsonBean = new JsonBean();
         try {
-            jsonBean.setData("测试成功");
+            String vpnInfoStr= JSON.toJSONString(vpnInfo);
+            if(clientZk.checkExists().forPath(ClientZkConfig.VPN_INFO_NODE)==null) {
+                clientZk.create().forPath(ClientZkConfig.VPN_INFO_NODE, vpnInfoStr.getBytes("UTF-8"));
+            }else{
+                clientZk.setData().forPath(ClientZkConfig.VPN_INFO_NODE, vpnInfoStr.getBytes("UTF-8"));
+            }
+            jsonBean.setData("推送vpn信息成功");
         } catch (Exception e) {
-            log.error("获取博客内容失败", e);
-            jsonBean.fail("获取博客内容失败");
+            log.error("推送vpn信息失败", e);
+            jsonBean.fail("推送vpn信息失败");
         }
         return jsonBean;
     }
@@ -123,28 +141,5 @@ public class OfficialAccountController {
     }
 
 
-    public static void main(String[] args) {
-        SAXReader reader = new SAXReader();
-        Document document = null;
-        try {
-            //result是需要解析的字符串
-            //解析字符串需要转换成流的形式，可以指定转换字符编码
-            String xml="<xml>\n" +
-                    " <ToUserName><![CDATA[粉丝号]]></ToUserName>\n" +
-                    " <FromUserName><![CDATA[公众号]]></FromUserName>\n" +
-                    " <CreateTime>1460541339</CreateTime>\n" +
-                    " <MsgType><![CDATA[text]]></MsgType>\n" +
-                    " <Content><![CDATA[test]]></Content>\n" +
-                    "</xml>";
-            document = reader.read(new ByteArrayInputStream(xml.getBytes("UTF-8")));
-            Element root=document.getRootElement();
-            String msgType=root.elementText("MsgType");
-            System.out.println(msgType);
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

@@ -77,10 +77,10 @@ public class ClientZkConfig {
 
 
     //监听ACCESS_TOKEN的节点
-    private static String ACCESS_TOKEN_NODE = "/access_token";
+    public static String ACCESS_TOKEN_NODE = "/access_token";
 
     //监听VPN信息的节点
-    private static String VPN_INFO_NODE = "/vpn_info";
+    public static String VPN_INFO_NODE = "/vpn_info";
 
 
     @Bean(name="clientZk",destroyMethod = "close")

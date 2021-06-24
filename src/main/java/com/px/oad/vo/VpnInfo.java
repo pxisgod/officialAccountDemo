@@ -10,5 +10,4 @@ public class VpnInfo {
     private String ip;
     private String port;
     private String password;
-    private String encryptType;
 }
