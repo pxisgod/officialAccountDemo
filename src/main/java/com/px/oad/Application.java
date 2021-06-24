@@ -13,12 +13,14 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.PropertySource;
 
 
 @SpringBootApplication(exclude = {JestAutoConfiguration.class})
 @ServletComponentScan
 @EnableAspectJAutoProxy
 @EntityScan(basePackages = {"com.px.oad"})
+@PropertySource({"classpath:config.properties"})
 @EnableCaching
 public class Application extends SpringBootServletInitializer {
 

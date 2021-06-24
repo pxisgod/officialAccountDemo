@@ -22,10 +22,6 @@ import java.util.List;
 public class MvcConfig {
 
 
-    //@Autowired //拦截器
-    //private UspaInterceptor uspaInterceptor;
-
-
     @Bean
     public FastJsonHttpMessageConverter fastJsonHttpMessageConverter() {
         FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
@@ -67,7 +63,6 @@ public class MvcConfig {
              */
             public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
                 //添加字符串转换 不带"
-
                 converters.add(stringHttpMessageConverter());
                 converters.add(fastJsonHttpMessageConverter());
             }
