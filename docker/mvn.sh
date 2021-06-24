@@ -1,7 +1,16 @@
 #!/bin/bash
 
-#-DskipDockerBuild Ìø¹ý build ¾µÏñ
-#-DskipDockerTag Ìø¹ý tag ¾µÏñ
-#-DskipDockerPush Ìø¹ý push ¾µÏñ
-#-DskipDocker Ìø¹ýÕû¸ö½×¶Î
+#-DskipDockerBuild ï¿½ï¿½ï¿½ï¿½ build ï¿½ï¿½ï¿½ï¿½
+#-DskipDockerTag ï¿½ï¿½ï¿½ï¿½ tag ï¿½ï¿½ï¿½ï¿½
+#-DskipDockerPush ï¿½ï¿½ï¿½ï¿½ push ï¿½ï¿½ï¿½ï¿½
+#-DskipDocker ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¶ï¿½
 mvn  -Dmaven.test.skip=true -P local clean package
+
+
+
+docker network create -d bridge my-net
+
+docker run --name my_zookeeper -d --network my-net zookeeper:latest
+
+docker run  -itd  --name official-account-demo --network my-net -p 80:8080 official-account-demo:latest
+

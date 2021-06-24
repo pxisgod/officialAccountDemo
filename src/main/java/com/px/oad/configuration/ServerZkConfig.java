@@ -8,6 +8,7 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -17,6 +18,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 @Configuration
 public class ServerZkConfig {
+
+    @Value("${serverZk}")
+    private String serverZk;
 
     //当前使用的accessToken
     private  static AccessTokenInfo accessTokenInfo;
@@ -48,7 +52,7 @@ public class ServerZkConfig {
     public CuratorFramework getZkClient() throws Exception {
         CuratorFramework client = CuratorFrameworkFactory
                 .builder()
-                .connectString("127.0.0.1:2181")
+                .connectString(serverZk)
                 .sessionTimeoutMs(5000)
                 .retryPolicy(new ExponentialBackoffRetry(1000, 3))
                 .build();
