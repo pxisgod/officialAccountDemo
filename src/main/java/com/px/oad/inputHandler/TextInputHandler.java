@@ -31,16 +31,19 @@ public class TextInputHandler  {
 	 */
 	public String handleWithReceive(ReceiveXmlEntity receiveXmlEntity) {
 		String receiveContent = receiveXmlEntity.getContent();
-		StringBuffer content = new StringBuffer();
+		StringBuffer content = new StringBuffer("");
 
 		if(receiveContent != null && receiveContent.equals("pxisgod")) {
 			String openId = receiveXmlEntity.getFromUserName();
 			logger.info("----------------收到用户：openId=" + openId + " 的文本消息,文本内容为：" + receiveContent + "----------------");
 			VpnInfo vpnInfo=ClientZkConfig.getVpnInfo();
 			if(vpnInfo!=null) {
-				content.append("IP:").append(vpnInfo.getIp()).append("\n");
-				content.append("PORT:").append(vpnInfo.getPort()).append("\n");
-				content.append("PASSWORD:").append(vpnInfo.getPassword());
+				content.append("服务器ip:").append(vpnInfo.getServerIp()).append("\n");
+				content.append("服务器端口:").append(vpnInfo.getServerPort()).append("\n");
+				content.append("密码:").append(vpnInfo.getPassword()).append("\n");
+				content.append("加密方法:").append(vpnInfo.getMethod()).append("\n");
+				content.append("协议:").append(vpnInfo.getProtocol()).append("\n");
+				content.append("混淆:").append(vpnInfo.getObfs()).append("\n");
 				return outXmlProcess.getTextResult(receiveXmlEntity, content.toString());
 			}
 		}

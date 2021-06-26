@@ -68,7 +68,12 @@ public class ClientZkConfig {
         if (vpnInfo == null)
             return null;
         VpnInfo newVpnInfo = new VpnInfo();
-        newVpnInfo.setIp(vpnInfo.getIp());
+        newVpnInfo.setServerIp(vpnInfo.getServerIp());
+        newVpnInfo.setServerPort(vpnInfo.getServerPort());
+        newVpnInfo.setPassword(vpnInfo.getPassword());
+        newVpnInfo.setMethod(vpnInfo.getMethod());
+        newVpnInfo.setProtocol(vpnInfo.getProtocol());
+        newVpnInfo.setObfs(vpnInfo.getObfs());
         vpnLock.readLock().unlock();
         return newVpnInfo;
     }

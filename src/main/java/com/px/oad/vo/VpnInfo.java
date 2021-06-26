@@ -7,7 +7,10 @@ import lombok.Data;
  */
 @Data
 public class VpnInfo {
-    private String ip;
-    private String port;
+    private String serverIp;
+    private Short serverPort;
     private String password;
+    private String method;
+    private String protocol;
+    private String obfs;
 }

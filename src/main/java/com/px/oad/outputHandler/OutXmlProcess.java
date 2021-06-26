@@ -2,6 +2,7 @@ package com.px.oad.outputHandler;
 
 import java.util.List;
 
+import com.google.common.base.Strings;
 import com.px.oad.vo.ReceiveXmlEntity;
 import com.px.oad.vo.SendXmlEntity;
 import org.springframework.beans.factory.annotation.Autowired;
